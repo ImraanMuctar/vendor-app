@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Regions • Vendor Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <div>
+    <h2 class="mb-1">Regions</h2>
+    <div class="text-muted">Create regions like UK, USA, EU, AU, etc.</div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="card p-3">
+      <h5 class="mb-3">Add a region</h5>
+      <form method="post" action="/admin/regions" class="d-flex gap-2">
+        <input class="form-control" name="name" placeholder="e.g. UK" required />
+        <button class="btn btn-primary px-4" type="submit">Add</button>
+      </form>
+      <div class="text-muted small mt-2">Region name must be unique.</div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="card p-3">
+      <h5 class="mb-3">All regions</h5>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead>
+            <tr><th style="width:90px;">ID</th><th>Name</th></tr>
+          </thead>
+          <tbody>
+            {% for r in regions %}
+              <tr>
+                <td class="text-muted">{{ r.id }}</td>
+                <td class="fw-semibold">{{ r.name }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="2" class="text-muted">No regions yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

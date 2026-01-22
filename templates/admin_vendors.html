@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Vendors • Vendor Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <div>
+    <h2 class="mb-1">Vendors</h2>
+    <div class="text-muted">Each vendor can have a Telegram bot link (Option 1 routing).</div>
+  </div>
+  <a class="btn btn-primary" href="/admin/vendors/new">+ Add Vendor</a>
+</div>
+
+<div class="card p-3">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Region</th>
+          <th>Vendor</th>
+          <th>Status</th>
+          <th>Bot</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in vendors %}
+          <tr>
+            <td class="text-muted">{{ v.region.name }}</td>
+            <td>
+              <div class="fw-semibold">{{ v.name }}</div>
+              {% if v.description %}
+                <div class="text-muted small">{{ v.description }}</div>
+              {% endif %}
+            </td>
+            <td>
+              {% if v.active %}
+                <span class="badge text-bg-success">Active</span>
+              {% else %}
+                <span class="badge text-bg-secondary">Inactive</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if v.bot_link %}
+                <a class="btn btn-outline-light btn-sm" target="_blank" href="{{ v.bot_link }}">
+                  Open bot
+                </a>
+                {% if v.bot_username %}
+                  <span class="text-muted small ms-2">@{{ v.bot_username }}</span>
+                {% endif %}
+              {% else %}
+                <span class="text-muted">No link</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <a class="btn btn-outline-light btn-sm" href="/admin/vendors/{{ v.id }}/edit">Edit</a>
+              <form class="d-inline" method="post" action="/admin/vendors/{{ v.id }}/delete"
+                    onsubmit="return confirm('Delete vendor?');">
+                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5" class="text-muted">No vendors yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
